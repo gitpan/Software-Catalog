@@ -1,5 +1,10 @@
 Revision history for Software-Catalog
 
+0.02    2012-11-08 (SHARYANTO)
+
+        Add get_software_info(). Add some more data. Some fixes/tweaks.
+
+
 0.01    2012-11-08 (SHARYANTO)
 
         First release (proof of concept).
