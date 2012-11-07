@@ -1,0 +1,186 @@
+NAME
+    Software::Catalog - Software catalog
+
+VERSION
+    version 0.01
+
+SYNOPSIS
+     use Software::Catalog qw(list_software);
+     my $res = list_software();
+
+DESCRIPTION
+    This module contains catalog of software.
+
+    Currently the main use for this module is to establish a common name for
+    a software and find the Debian source package name(s) (and possibly
+    others too in the future, like Fedora package, FreeBSD port, etc) for
+    it.
+
+    Eventually, if the project takes off, this will also contain
+    summary/description/URL/license for each software.
+
+STATUS
+    Proof of concept. Incomplete catalog.
+
+FAQ
+SEE ALSO
+    Software::Release::Watch
+
+    Software::Installation::Detect
+
+DESCRIPTION
+    This module has Rinci metadata.
+
+FUNCTIONS
+    None are exported by default, but they are exportable.
+
+  list_software(%args) -> [status, msg, result, meta]
+    REPLACE ME.
+
+    REPLACE ME
+
+    Data is in table form. Table fields are as follow:
+
+    *   *id* (ID field)
+
+    *   *debian_names*
+
+    *   *tags*
+
+    Arguments ('*' denotes required arguments):
+
+    *   debian_names => *array*
+
+        Only return records where the 'debian_names' field equals specified
+        value.
+
+    *   debian_names.has => *array*
+
+        Only return records where the 'debian_names' field is an array/list
+        which contains specified value.
+
+    *   debian_names.is => *array*
+
+        Only return records where the 'debian_names' field equals specified
+        value.
+
+    *   debian_names.lacks => *array*
+
+        Only return records where the 'debian_names' field is an array/list
+        which does not contain specified value.
+
+    *   detail => *bool* (default: 0)
+
+        Return array of full records instead of just ID fields.
+
+        By default, only the key (ID) field is returned per result entry.
+
+    *   fields => *array*
+
+        Select fields to return.
+
+    *   id => *str*
+
+        Only return records where the 'id' field equals specified value.
+
+    *   id.contains => *str*
+
+        Only return records where the 'id' field contains specified text.
+
+    *   id.is => *str*
+
+        Only return records where the 'id' field equals specified value.
+
+    *   id.max => *str*
+
+        Only return records where the 'id' field is less than or equal to
+        specified value.
+
+    *   id.min => *array*
+
+        Only return records where the 'id' field is greater than or equal to
+        specified value.
+
+    *   id.not_contains => *str*
+
+        Only return records where the 'id' field does not contain a certain
+        text.
+
+    *   id.xmax => *str*
+
+        Only return records where the 'id' field is less than specified
+        value.
+
+    *   id.xmin => *array*
+
+        Only return records where the 'id' field is greater than specified
+        value.
+
+    *   q => *str*
+
+        Search.
+
+    *   random => *bool* (default: 0)
+
+        Return records in random order.
+
+    *   result_limit => *int*
+
+        Only return a certain number of records.
+
+    *   result_start => *int* (default: 1)
+
+        Only return starting from the n'th record.
+
+    *   sort => *str*
+
+        Order records according to certain field(s).
+
+        A list of field names separated by comma. Each field can be prefixed
+        with '-' to specify descending order instead of the default
+        ascending.
+
+    *   tags => *array*
+
+        Only return records where the 'tags' field equals specified value.
+
+    *   tags.has => *array*
+
+        Only return records where the 'tags' field is an array/list which
+        contains specified value.
+
+    *   tags.is => *array*
+
+        Only return records where the 'tags' field equals specified value.
+
+    *   tags.lacks => *array*
+
+        Only return records where the 'tags' field is an array/list which
+        does not contain specified value.
+
+    *   with_field_names => *bool*
+
+        Return field names in each record (as hash/associative array).
+
+        When enabled, function will return each record as hash/associative
+        array (field name => value pairs). Otherwise, function will return
+        each record as list/array (field value, field value, ...).
+
+    Return value:
+
+    Returns an enveloped result (an array). First element (status) is an
+    integer containing HTTP status code (200 means OK, 4xx caller error, 5xx
+    function error). Second element (msg) is a string containing error
+    message, or 'OK' if status is 200. Third element (result) is optional,
+    the actual result. Fourth element (meta) is called result metadata and
+    is optional, a hash that contains extra information.
+
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2012 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
