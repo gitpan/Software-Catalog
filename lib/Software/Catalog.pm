@@ -13,7 +13,7 @@ our @EXPORT_OK = qw(
                        list_software
                );
 
-our $VERSION = '0.02'; # VERSION
+our $VERSION = '0.03'; # VERSION
 
 our %SPEC;
 
@@ -57,15 +57,16 @@ my @software = (
     },
 );
 
-my $deb_re = qr/\A[a-z0-9]+(-[a-z0-9]+)*\z/;
-my $tag_re = qr/\A([a-z0-9]+(-[a-z0-9]+)*::)?[a-z0-9]+(-[a-z0-9]+)*\z/x;
+our $swid_re = qr/\A[a-z]([a-z0-9_])*\z/;
+our $deb_re  = qr/\A[a-z0-9]+(-[a-z0-9]+)*\z/;
+our $tag_re  = qr/\A([a-z0-9]+(-[a-z0-9]+)*::)?[a-z0-9]+(-[a-z0-9]+)*\z/x;
 
 my $table_spec = {
     fields => {
         id => {
             index      => 0,
             schema     => ['str*' => {
-                match => $deb_re,
+                match => $swid_re,
             }],
             searchable => 1,
         },
@@ -120,7 +121,7 @@ $SPEC{get_software_info} = {
 };
 sub get_software_info {
     my %args = @_;
-    my $id = $args{id}; my $arg_err; ((defined($id)) ? 1 : (($arg_err = 'TMPERRMSG: required data not specified'),0)) && ((!ref($id)) ? 1 : (($arg_err = 'TMPERRMSG: type check failed'),0)) && (($id =~ /(?^:\A[a-z0-9]+(-[a-z0-9]+)*\z)/) ? 1 : (($arg_err = 'TMPERRMSG: clause failed: match'),0)); if ($arg_err) { return [400, "Invalid argument value for id: $arg_err"] } # VALIDATE_ARG
+    my $id = $args{id}; my $arg_err; ((defined($id)) ? 1 : (($arg_err = 'TMPERRMSG: required data not specified'),0)) && ((!ref($id)) ? 1 : (($arg_err = 'TMPERRMSG: type check failed'),0)) && (($id =~ /(?^:\A[a-z]([a-z0-9_])*\z)/) ? 1 : (($arg_err = 'TMPERRMSG: clause failed: match'),0)); if ($arg_err) { return [400, "Invalid argument value for id: $arg_err"] } # VALIDATE_ARG
 
     my $res = list_software("id" => $id, detail=>1);
     return [404, "No such software"] unless @{$res->[2]};
@@ -145,7 +146,7 @@ Software::Catalog - Software catalog
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 

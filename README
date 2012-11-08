@@ -2,7 +2,7 @@ NAME
     Software::Catalog - Software catalog
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
      use Software::Catalog qw(list_software get_software_info);
