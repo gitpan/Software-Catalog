@@ -1,16 +1,25 @@
 Revision history for Software-Catalog
 
+0.04    2014-08-22 (SHARYANTO)
+
+        - No functional changes.
+
+        - Rebuild and remove '# VALIDATE_ARGS' to make the built module works
+          under Perl < 5.14 (because there is a change in Regexp stringification
+          in 5.14).
+
+
 0.03    2012-11-08 (SHARYANTO)
 
-        Require software ID to be [a-z0-9_]+ only (no more dashes), so it can be
-        used as module name.
+        - Require software ID to be [a-z0-9_]+ only (no more dashes), so it can
+          be used as module name.
 
 
 0.02    2012-11-08 (SHARYANTO)
 
-        Add get_software_info(). Add some more data. Some fixes/tweaks.
+        - Add get_software_info(). Add some more data. Some fixes/tweaks.
 
 
 0.01    2012-11-08 (SHARYANTO)
 
-        First release (proof of concept).
+        - First release (proof of concept).

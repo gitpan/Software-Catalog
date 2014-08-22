@@ -2,11 +2,13 @@ NAME
     Software::Catalog - Software catalog
 
 VERSION
-    version 0.03
+    This document describes version 0.04 of Software::Catalog (from Perl
+    distribution Software-Catalog), released on 2014-08-22.
 
 SYNOPSIS
      use Software::Catalog qw(list_software get_software_info);
      my $res = list_software();
+     $res    = get_software_info(software_id => 'wordpress');
 
 DESCRIPTION
     This module contains catalog of software.
@@ -19,21 +21,7 @@ DESCRIPTION
     Eventually, if the project takes off, this will also contain
     summary/description/URL/license for each software.
 
-STATUS
-    Proof of concept. Incomplete catalog.
-
-FAQ
-SEE ALSO
-    Software::Release::Watch
-
-    Software::Installation::Detect
-
-DESCRIPTION
-    This module has Rinci metadata.
-
 FUNCTIONS
-    None are exported by default, but they are exportable.
-
   get_software_info(%args) -> [status, msg, result, meta]
     Get info on a software.
 
@@ -43,25 +31,21 @@ FUNCTIONS
 
     Return value:
 
-    Returns an enveloped result (an array). First element (status) is an
-    integer containing HTTP status code (200 means OK, 4xx caller error, 5xx
-    function error). Second element (msg) is a string containing error
-    message, or 'OK' if status is 200. Third element (result) is optional,
-    the actual result. Fourth element (meta) is called result metadata and
-    is optional, a hash that contains extra information.
+    Returns an enveloped result (an array).
+
+    First element (status) is an integer containing HTTP status code (200
+    means OK, 4xx caller error, 5xx function error). Second element (msg) is
+    a string containing error message, or 'OK' if status is 200. Third
+    element (result) is optional, the actual result. Fourth element (meta)
+    is called result metadata and is optional, a hash that contains extra
+    information.
+
+     (any)
 
   list_software(%args) -> [status, msg, result, meta]
     REPLACE ME.
 
     REPLACE ME
-
-    Data is in table form. Table fields are as follow:
-
-    *   *id* (ID field)
-
-    *   *debian_names*
-
-    *   *tags*
 
     Arguments ('*' denotes required arguments):
 
@@ -79,6 +63,11 @@ FUNCTIONS
 
         Only return records where the 'debian_names' field equals specified
         value.
+
+    *   debian_names.isnt => *array*
+
+        Only return records where the 'debian_names' field does not equal
+        specified value.
 
     *   debian_names.lacks => *array*
 
@@ -103,31 +92,45 @@ FUNCTIONS
 
         Only return records where the 'id' field contains specified text.
 
+    *   id.in => *array*
+
+        Only return records where the 'id' field is in the specified values.
+
     *   id.is => *str*
 
         Only return records where the 'id' field equals specified value.
+
+    *   id.isnt => *str*
+
+        Only return records where the 'id' field does not equal specified
+        value.
 
     *   id.max => *str*
 
         Only return records where the 'id' field is less than or equal to
         specified value.
 
-    *   id.min => *array*
+    *   id.min => *str*
 
         Only return records where the 'id' field is greater than or equal to
         specified value.
 
     *   id.not_contains => *str*
 
-        Only return records where the 'id' field does not contain a certain
+        Only return records where the 'id' field does not contain specified
         text.
+
+    *   id.not_in => *array*
+
+        Only return records where the 'id' field is not in the specified
+        values.
 
     *   id.xmax => *str*
 
         Only return records where the 'id' field is less than specified
         value.
 
-    *   id.xmin => *array*
+    *   id.xmin => *str*
 
         Only return records where the 'id' field is greater than specified
         value.
@@ -169,6 +172,11 @@ FUNCTIONS
 
         Only return records where the 'tags' field equals specified value.
 
+    *   tags.isnt => *array*
+
+        Only return records where the 'tags' field does not equal specified
+        value.
+
     *   tags.lacks => *array*
 
         Only return records where the 'tags' field is an array/list which
@@ -184,18 +192,46 @@ FUNCTIONS
 
     Return value:
 
-    Returns an enveloped result (an array). First element (status) is an
-    integer containing HTTP status code (200 means OK, 4xx caller error, 5xx
-    function error). Second element (msg) is a string containing error
-    message, or 'OK' if status is 200. Third element (result) is optional,
-    the actual result. Fourth element (meta) is called result metadata and
-    is optional, a hash that contains extra information.
+    Returns an enveloped result (an array).
+
+    First element (status) is an integer containing HTTP status code (200
+    means OK, 4xx caller error, 5xx function error). Second element (msg) is
+    a string containing error message, or 'OK' if status is 200. Third
+    element (result) is optional, the actual result. Fourth element (meta)
+    is called result metadata and is optional, a hash that contains extra
+    information.
+
+     (any)
+
+STATUS
+    Proof of concept. Incomplete catalog.
+
+FAQ
+SEE ALSO
+    Software::Release::Watch
+
+    Software::Installation::Detect
+
+HOMEPAGE
+    Please visit the project's homepage at
+    <https://metacpan.org/release/Software-Catalog>.
+
+SOURCE
+    Source repository is at
+    <https://github.com/sharyanto/perl-Software-Catalog>.
+
+BUGS
+    Please report any bugs or feature requests on the bugtracker website
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=Software-Catalog>
+
+    When submitting a bug or request, please include a test-file or a patch
+    to an existing test-file that illustrates the bug or desired feature.
 
 AUTHOR
     Steven Haryanto <stevenharyanto@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Steven Haryanto.
+    This software is copyright (c) 2014 by Steven Haryanto.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

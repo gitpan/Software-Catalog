@@ -1,6 +1,6 @@
 package Software::Catalog;
 
-use 5.010;
+use 5.010001;
 use strict;
 use warnings;
 
@@ -13,7 +13,7 @@ our @EXPORT_OK = qw(
                        list_software
                );
 
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 our %SPEC;
 
@@ -117,11 +117,10 @@ $SPEC{get_software_info} = {
             pos      => 0,
         },
     },
-    "_perinci.sub.wrapper.validate_args" => 0,
 };
 sub get_software_info {
     my %args = @_;
-    my $id = $args{id}; my $arg_err; ((defined($id)) ? 1 : (($arg_err = 'TMPERRMSG: required data not specified'),0)) && ((!ref($id)) ? 1 : (($arg_err = 'TMPERRMSG: type check failed'),0)) && (($id =~ /(?^:\A[a-z]([a-z0-9_])*\z)/) ? 1 : (($arg_err = 'TMPERRMSG: clause failed: match'),0)); if ($arg_err) { return [400, "Invalid argument value for id: $arg_err"] } # VALIDATE_ARG
+    my $id = $args{id};
 
     my $res = list_software("id" => $id, detail=>1);
     return [404, "No such software"] unless @{$res->[2]};
@@ -135,10 +134,11 @@ sub get_software_info {
 1;
 # ABSTRACT: Software catalog
 
-
-
 __END__
+
 =pod
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -146,12 +146,13 @@ Software::Catalog - Software catalog
 
 =head1 VERSION
 
-version 0.03
+This document describes version 0.04 of Software::Catalog (from Perl distribution Software-Catalog), released on 2014-08-22.
 
 =head1 SYNOPSIS
 
  use Software::Catalog qw(list_software get_software_info);
  my $res = list_software();
+ $res    = get_software_info(software_id => 'wordpress');
 
 =head1 DESCRIPTION
 
@@ -164,27 +165,8 @@ the future, like Fedora package, FreeBSD port, etc) for it.
 Eventually, if the project takes off, this will also contain
 summary/description/URL/license for each software.
 
-=head1 STATUS
-
-Proof of concept. Incomplete catalog.
-
-=head1 FAQ
-
-=head1 SEE ALSO
-
-L<Software::Release::Watch>
-
-L<Software::Installation::Detect>
-
-=head1 DESCRIPTION
-
-
-This module has L<Rinci> metadata.
-
 =head1 FUNCTIONS
 
-
-None are exported by default, but they are exportable.
 
 =head2 get_software_info(%args) -> [status, msg, result, meta]
 
@@ -200,37 +182,23 @@ Arguments ('*' denotes required arguments):
 
 Return value:
 
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+Returns an enveloped result (an array).
+
+First element (status) is an integer containing HTTP status code
+(200 means OK, 4xx caller error, 5xx function error). Second element
+(msg) is a string containing error message, or 'OK' if status is
+200. Third element (result) is optional, the actual result. Fourth
+element (meta) is called result metadata and is optional, a hash
+that contains extra information.
+
+ (any)
+
 
 =head2 list_software(%args) -> [status, msg, result, meta]
 
 REPLACE ME.
 
 REPLACE ME
-
-Data is in table form. Table fields are as follow:
-
-=over
-
-=item *
-
-I<id> (ID field)
-
-
-
-=item *
-
-I<debian_names>
-
-
-
-=item *
-
-I<tags>
-
-
-
-=back
 
 Arguments ('*' denotes required arguments):
 
@@ -247,6 +215,10 @@ Only return records where the 'debian_names' field is an array/list which contai
 =item * B<debian_names.is> => I<array>
 
 Only return records where the 'debian_names' field equals specified value.
+
+=item * B<debian_names.isnt> => I<array>
+
+Only return records where the 'debian_names' field does not equal specified value.
 
 =item * B<debian_names.lacks> => I<array>
 
@@ -270,27 +242,39 @@ Only return records where the 'id' field equals specified value.
 
 Only return records where the 'id' field contains specified text.
 
+=item * B<id.in> => I<array>
+
+Only return records where the 'id' field is in the specified values.
+
 =item * B<id.is> => I<str>
 
 Only return records where the 'id' field equals specified value.
+
+=item * B<id.isnt> => I<str>
+
+Only return records where the 'id' field does not equal specified value.
 
 =item * B<id.max> => I<str>
 
 Only return records where the 'id' field is less than or equal to specified value.
 
-=item * B<id.min> => I<array>
+=item * B<id.min> => I<str>
 
 Only return records where the 'id' field is greater than or equal to specified value.
 
 =item * B<id.not_contains> => I<str>
 
-Only return records where the 'id' field does not contain a certain text.
+Only return records where the 'id' field does not contain specified text.
+
+=item * B<id.not_in> => I<array>
+
+Only return records where the 'id' field is not in the specified values.
 
 =item * B<id.xmax> => I<str>
 
 Only return records where the 'id' field is less than specified value.
 
-=item * B<id.xmin> => I<array>
+=item * B<id.xmin> => I<str>
 
 Only return records where the 'id' field is greater than specified value.
 
@@ -329,6 +313,10 @@ Only return records where the 'tags' field is an array/list which contains speci
 
 Only return records where the 'tags' field equals specified value.
 
+=item * B<tags.isnt> => I<array>
+
+Only return records where the 'tags' field does not equal specified value.
+
 =item * B<tags.lacks> => I<array>
 
 Only return records where the 'tags' field is an array/list which does not contain specified value.
@@ -345,7 +333,44 @@ as list/array (field value, field value, ...).
 
 Return value:
 
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+Returns an enveloped result (an array).
+
+First element (status) is an integer containing HTTP status code
+(200 means OK, 4xx caller error, 5xx function error). Second element
+(msg) is a string containing error message, or 'OK' if status is
+200. Third element (result) is optional, the actual result. Fourth
+element (meta) is called result metadata and is optional, a hash
+that contains extra information.
+
+ (any)
+
+=head1 STATUS
+
+Proof of concept. Incomplete catalog.
+
+=head1 FAQ
+
+=head1 SEE ALSO
+
+L<Software::Release::Watch>
+
+L<Software::Installation::Detect>
+
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/Software-Catalog>.
+
+=head1 SOURCE
+
+Source repository is at L<https://github.com/sharyanto/perl-Software-Catalog>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=Software-Catalog>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
@@ -353,10 +378,9 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Steven Haryanto.
+This software is copyright (c) 2014 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
